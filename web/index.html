@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>crtsh-recon — CT Log Hall of Fame</title>
+  <title>crtsh-recon — Certificate Transparency Subdomain Discovery</title>
+  <meta name="description" content="crtsh-recon — query Certificate Transparency logs to enumerate subdomains, detect SAN leaks, and map shared infrastructure. Zero dependencies, pure Python stdlib.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
@@ -11,54 +12,174 @@
 </head>
 <body>
 
-  <header id="header">
-    <div id="header-left">
-      <span id="tool-name">crtsh-recon</span>
-      <span id="tool-subtitle">CT Log Hall of Fame</span>
+<nav>
+  <a class="nav-brand" href="index.html">CRTSH-RECON</a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-active">Home</a>
+    <a href="hall-of-fame.html">Hall of Fame</a>
+    <a href="https://github.com/fmfalgun/crtsh-recon" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    <a href="https://fmfalgun.github.io" target="_blank" rel="noopener noreferrer">Portfolio ↗</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>Certificate <span>Transparency</span> Recon</h1>
+  <p>Enumerate subdomains · detect SAN leaks · map shared infrastructure — via public CT logs</p>
+  <div class="install-block">
+    <code class="install-cmd">python3 crtsh-recon.py -d target.com</code>
+  </div>
+  <div class="hero-cta-row">
+    <a href="hall-of-fame.html" class="cta-btn">→ Hall of Fame</a>
+    <a href="https://github.com/fmfalgun/crtsh-recon" target="_blank" rel="noopener noreferrer" class="cta-ghost">GitHub ↗</a>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- LEFT: sticky info panel -->
+  <aside class="info-panel">
+
+    <div class="panel-block">
+      <div class="panel-heading">&gt; WHAT IS CRT.SH</div>
+      <p class="panel-text">
+        <span class="hl">Certificate Transparency</span> is a public ledger where every TLS certificate
+        must be logged before browsers trust it. Google mandated it in 2018. Every cert issued for
+        <code class="inline-code">*.yoursite.com</code> or any subdomain is recorded — permanently, publicly.
+      </p>
+      <p class="panel-text">
+        <span class="hl">crt.sh</span> is Sectigo's free search interface to these logs, exposing a JSON API:
+        <code class="inline-code">crt.sh/?q=%.domain&output=json</code>
+      </p>
+      <p class="panel-text">
+        Because cert issuance happens before deployment, CT logs reveal
+        <span class="hl">subdomains not yet live</span>, staging environments, and infrastructure
+        shared across unrelated domains.
+      </p>
     </div>
-    <div id="header-right">
-      <span id="hof-stats">— domains · — certs</span>
-    </div>
-  </header>
 
-  <div id="error-box"><span id="error-message"></span></div>
-
-  <main id="main">
-
-    <!-- Disclaimer -->
-    <div id="disclaimer">
-      <span class="disclaimer-icon">⚠</span>
-      All entries below were submitted via <code>crtsh-recon --submit</code>.
-      Submitters acknowledged their query would be publicly listed here.
-      <strong>Search responsibly</strong> — only query domains you have permission to enumerate.
-    </div>
-
-    <!-- How to add your domain -->
-    <div id="how-to-add">
-      <span class="howto-label">[ // ADD YOUR DOMAIN ]</span>
-      <code class="howto-cmd">pip install crtsh-recon &amp;&amp; crtsh-recon -d yourdomain.com --submit</code>
-      <a href="https://github.com/fmfalgun/crtsh-recon" target="_blank" rel="noopener noreferrer" class="howto-link">→ GitHub ↗</a>
+    <div class="panel-block">
+      <div class="panel-heading">&gt; WHY THIS SCRIPT</div>
+      <p class="panel-text">
+        The crt.sh web UI is <span class="hl">manual, unfiltered, uncacheable</span> — raw cert
+        records with no classification and no local storage.
+      </p>
+      <ul class="panel-list">
+        <li>Classifies: <span class="direct-hl">direct</span> / <span class="wildcard-hl">wildcard</span> / <span class="leak-hl">SAN leak</span></li>
+        <li>Deduplicates across cert records</li>
+        <li>Caches to SQLite — repeat queries instant</li>
+        <li>Outputs structured JSON for piping</li>
+        <li>Zero pip deps — pure Python stdlib</li>
+      </ul>
     </div>
 
-    <!-- Search -->
-    <div id="search-row">
-      <input id="search-input" type="text" placeholder="filter domains..." autocomplete="off" spellcheck="false">
-      <span id="search-count"></span>
+    <div class="panel-block">
+      <div class="panel-heading">&gt; HOW IT WORKS</div>
+      <div class="arch-diagram">
+        <div class="arch-box input-box">python3 crtsh-recon.py -d target.com</div>
+        <div class="arch-arrow">▼</div>
+        <div class="arch-box engine-box">crt.sh JSON API<span class="arch-sub">crt.sh/?q=%.target.com&output=json</span></div>
+        <div class="arch-arrow">▼</div>
+        <div class="arch-cache">
+          <div class="cache-label">SQLITE CACHE (cache.db)</div>
+          <div class="cache-sub">fresh (&lt;24h)? serve instantly<br>stale? fetch live</div>
+        </div>
+        <div class="arch-arrow">▼</div>
+        <div class="arch-box engine-box">CLASSIFY HOSTNAMES<span class="arch-sub">direct · wildcard · SAN leak</span></div>
+        <div class="arch-arrow">▼</div>
+        <div class="arch-box output-box">JSON OUTPUT + STDOUT SUMMARY</div>
+      </div>
     </div>
 
-    <!-- Alphabetical domain list — JS fills this -->
-    <div id="domain-list"></div>
+  </aside>
+
+  <!-- RIGHT: main content -->
+  <main class="home-main">
+
+    <div class="panel-block home-panel">
+      <div class="panel-heading">&gt; USAGE</div>
+      <div class="code-block">
+        <div class="code-comment"># basic query — results printed + cached</div>
+        <pre class="code-pre">python3 crtsh-recon.py -d target.com</pre>
+        <div class="code-comment"># save full JSON to file</div>
+        <pre class="code-pre">python3 crtsh-recon.py -d target.com -o results.json</pre>
+        <div class="code-comment"># bypass cache, always fetch fresh</div>
+        <pre class="code-pre">python3 crtsh-recon.py -d target.com --no-cache</pre>
+        <div class="code-comment"># set custom cache TTL (hours)</div>
+        <pre class="code-pre">python3 crtsh-recon.py -d target.com --ttl 6</pre>
+        <div class="code-comment"># submit to public hall of fame</div>
+        <pre class="code-pre">python3 crtsh-recon.py -d target.com --submit</pre>
+      </div>
+    </div>
+
+    <div class="panel-block home-panel">
+      <div class="panel-heading">&gt; OUTPUT SCHEMA</div>
+      <div class="code-block">
+<pre class="code-pre">{
+  "domain":     "nmap.org",
+  "queried_at": "2026-06-20T02:01:44Z",
+  "cert_count": 52,
+  "summary": {
+    "total_certs":       52,
+    "unique_names":      17,
+    "direct_subdomains": 10,
+    "wildcards":         2,
+    "san_leaks":         5
+  },
+  "entries": [
+    {
+      "name":       "scanme.nmap.org",
+      "type":       "direct",
+      "issuer":     "Let's Encrypt",
+      "not_before": "2026-04-01",
+      "not_after":  "2026-06-30",
+      "crtsh_id":   15190447
+    },
+    { "name": "*.nmap.org",    "type": "wildcard", ... },
+    { "name": "seclists.org",  "type": "leak",     ... }
+  ]
+}</pre>
+      </div>
+      <p class="panel-text schema-note">
+        <span class="direct-hl">direct</span> — subdomain of queried apex ·
+        <span class="wildcard-hl">wildcard</span> — <code class="inline-code">*.apex</code> cert ·
+        <span class="leak-hl">leak</span> — different root domain on same cert
+      </p>
+    </div>
+
+    <div class="panel-block home-panel">
+      <div class="panel-heading">&gt; SAN LEAKS — WHAT ARE THEY</div>
+      <p class="panel-text">
+        A <span class="hl">Subject Alternative Name (SAN)</span> is the list of hostnames a cert covers.
+        When a CA bundles multiple domains into one cert, those other domains appear as SAN entries —
+        <span class="leak-hl">leaking the server's other tenants</span>.
+      </p>
+      <p class="panel-text">
+        Querying <code class="inline-code">nmap.org</code> reveals
+        <code class="inline-code">seclists.org</code>, <code class="inline-code">sectools.org</code>,
+        <code class="inline-code">insecure.org</code> — all hosted on the same infrastructure.
+        One CT query, entire server cluster mapped.
+      </p>
+    </div>
+
+    <div class="hof-cta-card">
+      <div class="hof-cta-label">[ // HALL OF FAME ]</div>
+      <p class="hof-cta-desc">
+        Every domain queried with <code class="inline-code">--submit</code> is indexed here.
+        Browse CT recon results for any submitted domain — no tool required.
+      </p>
+      <a href="hall-of-fame.html" class="cta-btn">→ Open Hall of Fame</a>
+    </div>
 
   </main>
 
-  <footer id="footer">
-    <span>powered by Certificate Transparency logs</span>
-    <span class="footer-sep">·</span>
-    <a href="https://github.com/fmfalgun/crtsh-recon" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-    <span class="footer-sep">·</span>
-    <span>refreshed monthly by GitHub Actions</span>
-  </footer>
+</div>
 
-  <script src="assets/js/main.js"></script>
+<footer class="site-footer">
+  Built by <a href="https://fmfalgun.github.io" target="_blank" rel="noopener noreferrer">Falgun Marothia</a>
+  &middot; data from <a href="https://crt.sh" target="_blank" rel="noopener noreferrer">crt.sh</a> (Sectigo)
+  &middot; <a href="https://github.com/fmfalgun/crtsh-recon" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+  &middot; <a href="hall-of-fame.html">Hall of Fame</a>
+</footer>
+
 </body>
 </html>

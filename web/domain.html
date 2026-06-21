@@ -11,15 +11,21 @@
 </head>
 <body>
 
-  <header id="header">
-    <div id="header-left">
-      <a href="index.html" id="back-link">← hall of fame</a>
-      <span id="tool-name" id="domain-title">—</span>
+  <nav>
+    <a class="nav-brand" href="index.html">CRTSH-RECON</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="hall-of-fame.html" class="nav-active">Hall of Fame</a>
+      <a href="https://github.com/fmfalgun/crtsh-recon" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      <a href="https://fmfalgun.github.io" target="_blank" rel="noopener noreferrer">Portfolio ↗</a>
     </div>
-    <div id="header-right">
-      <span id="contributor-meta"></span>
-    </div>
-  </header>
+  </nav>
+
+  <!-- Domain name + contributor shown below nav -->
+  <div class="domain-header">
+    <span id="tool-name" class="domain-name-display">—</span>
+    <span id="contributor-meta" class="domain-contributor"></span>
+  </div>
 
   <div id="error-box"><span id="error-message"></span></div>
 
@@ -68,12 +74,11 @@
 
   </main>
 
-  <footer id="footer">
-    <a href="index.html">← hall of fame</a>
-    <span class="footer-sep">&middot;</span>
-    <a href="https://github.com/fmfalgun/crtsh-recon" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
-    <span class="footer-sep">&middot;</span>
-    <span>refreshed monthly by GitHub Actions</span>
+  <footer class="site-footer">
+    <a href="hall-of-fame.html">← hall of fame</a>
+    &middot; <a href="index.html">home</a>
+    &middot; <a href="https://github.com/fmfalgun/crtsh-recon" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    &middot; refreshed monthly by GitHub Actions
   </footer>
 
   <script src="assets/js/domain.js"></script>
