@@ -115,15 +115,9 @@ function buildCard(d) {
     card.appendChild(contrib);
   }
 
-  // Detail panel (hidden by default)
-  var detail = document.createElement('div');
-  detail.className = 'card-detail';
-  detail.hidden = true;
-  card.appendChild(detail);
-
-  // Click handler
+  // Click → navigate to detail page
   card.addEventListener('click', function () {
-    toggleCard(card, detail, d.domain);
+    window.location.href = 'domain.html?d=' + encodeURIComponent(d.domain || '');
   });
 
   return card;
@@ -136,125 +130,6 @@ function makeStat(text, type) {
   return span;
 }
 
-function toggleCard(card, detail, domain) {
-  var isExpanded = card.classList.contains('expanded');
-
-  if (isExpanded) {
-    card.classList.remove('expanded');
-    detail.hidden = true;
-    return;
-  }
-
-  card.classList.add('expanded');
-  detail.hidden = false;
-
-  // Only fetch if not already loaded
-  if (detail.getAttribute('data-loaded') === 'true') return;
-
-  detail.textContent = '';
-  var loading = document.createElement('p');
-  loading.className = 'detail-loading';
-  loading.textContent = 'loading…';
-  detail.appendChild(loading);
-
-  fetch('data/domains/' + domain + '.json')
-    .then(function (r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.json();
-    })
-    .then(function (data) {
-      detail.textContent = '';
-      renderDetail(detail, data);
-      detail.setAttribute('data-loaded', 'true');
-    })
-    .catch(function (err) {
-      detail.textContent = '';
-      var p = document.createElement('p');
-      p.className = 'detail-loading';
-      p.textContent = 'Failed to load detail: ' + err.message;
-      detail.appendChild(p);
-    });
-}
-
-function renderDetail(container, data) {
-  var entries = data.entries || [];
-  var groups = { direct: [], wildcard: [], leak: [] };
-
-  entries.forEach(function (e) {
-    if (groups.hasOwnProperty(e.type)) groups[e.type].push(e);
-  });
-
-  Object.keys(groups).forEach(function (type) {
-    groups[type].sort(function (a, b) {
-      return (a.name || '').localeCompare(b.name || '');
-    });
-  });
-
-  var sections = [
-    { key: 'direct',   label: '[ // direct subdomains ]', cls: 'direct' },
-    { key: 'wildcard', label: '[ // wildcard certs ]',     cls: 'wildcard' },
-    { key: 'leak',     label: '[ // san leaks ]',          cls: 'leak' },
-  ];
-
-  sections.forEach(function (s) {
-    var sec = document.createElement('div');
-    sec.className = 'section';
-
-    var h = document.createElement('h3');
-    h.className = 'section-title ' + s.cls;
-    h.textContent = s.label;
-    sec.appendChild(h);
-
-    var list = document.createElement('div');
-    list.className = 'entry-list';
-
-    if (groups[s.key].length === 0) {
-      var empty = document.createElement('p');
-      empty.className = 'empty';
-      empty.textContent = 'none found';
-      list.appendChild(empty);
-    } else {
-      groups[s.key].forEach(function (entry) {
-        list.appendChild(buildEntryElement(entry));
-      });
-    }
-
-    sec.appendChild(list);
-    container.appendChild(sec);
-  });
-}
-
-function buildEntryElement(entry) {
-  var div = document.createElement('div');
-  div.className = 'entry';
-
-  var nameSpan = document.createElement('span');
-  nameSpan.className = 'entry-name';
-  nameSpan.textContent = entry.name || '';
-  div.appendChild(nameSpan);
-
-  var issuerSpan = document.createElement('span');
-  issuerSpan.className = 'entry-issuer';
-  issuerSpan.textContent = entry.issuer || '';
-  div.appendChild(issuerSpan);
-
-  var datesSpan = document.createElement('span');
-  datesSpan.className = 'entry-dates';
-  datesSpan.textContent = (entry.not_before || '') + ' → ' + (entry.not_after || '');
-  div.appendChild(datesSpan);
-
-  if (entry.crtsh_id != null) {
-    var link = document.createElement('a');
-    link.className = 'entry-link';
-    link.href = 'https://crt.sh/?id=' + entry.crtsh_id;
-    link.target = '_blank';
-    link.rel = 'noopener';
-    link.textContent = '[crt.sh ↗]';
-    div.appendChild(link);
-  }
-
-  return div;
-}
 
 function setupSearch(domains) {
   var input = document.getElementById('search-input');

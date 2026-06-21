@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>crtsh-recon — domain detail</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <header id="header">
+    <div id="header-left">
+      <a href="index.html" id="back-link">← hall of fame</a>
+      <span id="tool-name" id="domain-title">—</span>
+    </div>
+    <div id="header-right">
+      <span id="contributor-meta"></span>
+    </div>
+  </header>
+
+  <div id="error-box"><span id="error-message"></span></div>
+
+  <!-- Stats row -->
+  <section id="stats-row" class="stats-row">
+    <div class="stat-badge">
+      <span class="stat-value" id="val-total-certs">&mdash;</span>
+      <span class="stat-label">Total Certs</span>
+    </div>
+    <div class="stat-badge">
+      <span class="stat-value" id="val-direct">&mdash;</span>
+      <span class="stat-label">Direct Subdomains</span>
+    </div>
+    <div class="stat-badge">
+      <span class="stat-value" id="val-wildcards">&mdash;</span>
+      <span class="stat-label">Wildcards</span>
+    </div>
+    <div class="stat-badge">
+      <span class="stat-value" id="val-leaks">&mdash;</span>
+      <span class="stat-label">SAN Leaks</span>
+    </div>
+  </section>
+
+  <main id="results">
+
+    <p id="queried-at-line">data as of <span id="queried-at">&mdash;</span></p>
+
+    <section class="result-section section" id="section-direct">
+      <h2 class="section-title direct">[ // DIRECT SUBDOMAINS ]</h2>
+      <div class="entry-list" id="list-direct"></div>
+    </section>
+
+    <section class="result-section section" id="section-wildcards">
+      <h2 class="section-title wildcard">[ // WILDCARD CERTS ]</h2>
+      <div class="entry-list" id="list-wildcards"></div>
+    </section>
+
+    <section class="result-section section" id="section-leaks">
+      <h2 class="section-title leak">
+        [ // SAN LEAKS ]
+        <span class="section-tooltip" title="hostnames from other domains found on shared certs — reveals infrastructure">&#9432;</span>
+      </h2>
+      <div class="section-note leak-note">hostnames from other domains found on shared certs &mdash; reveals infrastructure</div>
+      <div class="entry-list" id="list-leaks"></div>
+    </section>
+
+  </main>
+
+  <footer id="footer">
+    <a href="index.html">← hall of fame</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="https://github.com/fmfalgun/crtsh-recon" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
+    <span class="footer-sep">&middot;</span>
+    <span>refreshed monthly by GitHub Actions</span>
+  </footer>
+
+  <script src="assets/js/domain.js"></script>
+</body>
+</html>
