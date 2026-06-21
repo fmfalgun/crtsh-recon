@@ -253,6 +253,28 @@ footer a {
 
 footer a:hover { border-color: var(--amber); }
 
+/* ── Back link (domain detail page) ─────────────────────────────────── */
+
+#back-link {
+  font-family: var(--font-mono);
+  font-size: .62rem;
+  letter-spacing: .12em;
+  color: var(--amber);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(212,136,42,.3);
+  padding-bottom: 1px;
+  transition: border-color .2s;
+  white-space: nowrap;
+}
+#back-link:hover { border-color: var(--amber); color: var(--amber); }
+
+#contributor-meta {
+  font-family: var(--font-mono);
+  font-size: .62rem;
+  letter-spacing: .08em;
+  color: var(--khaki);
+}
+
 /* ── Global links ───────────────────────────────────────────────────── */
 
 a { color: var(--amber); text-decoration: none; }
