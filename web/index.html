@@ -3,87 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>crtsh-recon — CT Log Subdomain Discovery</title>
-
-  <!-- Fonts (matches FM//SEC portfolio) -->
+  <title>crtsh-recon — CT Log Hall of Fame</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-  <!-- Header -->
   <header id="header">
     <div id="header-left">
       <span id="tool-name">crtsh-recon</span>
-      <span id="tool-subtitle">Certificate Transparency Recon</span>
+      <span id="tool-subtitle">CT Log Hall of Fame</span>
     </div>
     <div id="header-right">
-      <span id="demo-note">demo: nmap.org &mdash; refreshed daily</span>
+      <span id="hof-stats">— domains · — certs</span>
     </div>
   </header>
 
-  <!-- Error banner (hidden by default) -->
-  <div id="error-box">
-    <span id="error-message"></span>
-  </div>
+  <div id="error-box"><span id="error-message"></span></div>
 
-  <!-- Stats row -->
-  <section id="stats-row" class="stats-row">
-    <div class="stat-badge" id="stat-total-certs">
-      <span class="stat-value" id="val-total-certs">&mdash;</span>
-      <span class="stat-label">Total Certs</span>
+  <main id="main">
+
+    <!-- Disclaimer -->
+    <div id="disclaimer">
+      <span class="disclaimer-icon">⚠</span>
+      All entries below were submitted via <code>crtsh-recon --submit</code>.
+      Submitters acknowledged their query would be publicly listed here.
+      <strong>Search responsibly</strong> — only query domains you have permission to enumerate.
     </div>
-    <div class="stat-badge" id="stat-direct">
-      <span class="stat-value" id="val-direct">&mdash;</span>
-      <span class="stat-label">Direct Subdomains</span>
+
+    <!-- How to add your domain -->
+    <div id="how-to-add">
+      <span class="howto-label">[ // ADD YOUR DOMAIN ]</span>
+      <code class="howto-cmd">pip install crtsh-recon &amp;&amp; crtsh-recon -d yourdomain.com --submit</code>
+      <a href="https://github.com/fmfalgun/crtsh-recon" target="_blank" rel="noopener noreferrer" class="howto-link">→ GitHub ↗</a>
     </div>
-    <div class="stat-badge" id="stat-wildcards">
-      <span class="stat-value" id="val-wildcards">&mdash;</span>
-      <span class="stat-label">Wildcards</span>
+
+    <!-- Search -->
+    <div id="search-row">
+      <input id="search-input" type="text" placeholder="filter domains..." autocomplete="off" spellcheck="false">
+      <span id="search-count"></span>
     </div>
-    <div class="stat-badge" id="stat-leaks">
-      <span class="stat-value" id="val-leaks">&mdash;</span>
-      <span class="stat-label">SAN Leaks</span>
-    </div>
-  </section>
 
-  <!-- Results sections -->
-  <main id="results">
-
-    <p id="queried-at-line">data as of <span id="queried-at">&mdash;</span></p>
-
-    <!-- Direct subdomains -->
-    <section class="result-section section" id="section-direct">
-      <h2 class="section-title direct">[ // DIRECT SUBDOMAINS ]</h2>
-      <div class="entry-list" id="list-direct"></div>
-    </section>
-
-    <!-- Wildcard certs -->
-    <section class="result-section section" id="section-wildcards">
-      <h2 class="section-title wildcard">[ // WILDCARD CERTS ]</h2>
-      <div class="entry-list" id="list-wildcards"></div>
-    </section>
-
-    <!-- SAN leaks -->
-    <section class="result-section section" id="section-leaks">
-      <h2 class="section-title leak">
-        [ // SAN LEAKS ]
-        <span class="section-tooltip" title="hostnames from other domains found on shared certs — reveals infrastructure">&#9432;</span>
-      </h2>
-      <div class="section-note leak-note">hostnames from other domains found on shared certs &mdash; reveals infrastructure</div>
-      <div class="entry-list" id="list-leaks"></div>
-    </section>
+    <!-- Alphabetical domain list — JS fills this -->
+    <div id="domain-list"></div>
 
   </main>
 
-  <!-- Footer -->
   <footer id="footer">
-    <span>data refreshed daily by GitHub Actions</span>
-    <span class="footer-sep">&middot;</span>
-    <a href="https://github.com/fmfalgun/crtsh-recon" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
+    <span>powered by Certificate Transparency logs</span>
+    <span class="footer-sep">·</span>
+    <a href="https://github.com/fmfalgun/crtsh-recon" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    <span class="footer-sep">·</span>
+    <span>refreshed monthly by GitHub Actions</span>
   </footer>
 
   <script src="assets/js/main.js"></script>

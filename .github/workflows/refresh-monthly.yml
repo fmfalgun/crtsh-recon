@@ -1,0 +1,122 @@
+name: Monthly CT Data Refresh
+
+on:
+  schedule:
+    - cron: '0 3 1 * *'   # 3am UTC on 1st of every month
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Refresh domains active in last 90 days
+        shell: python3 {0}
+        run: |
+          import json, subprocess, sys
+          from pathlib import Path
+          from datetime import datetime, timezone, timedelta
+
+          CUTOFF_DAYS = 90
+          now = datetime.now(timezone.utc)
+          cutoff = now - timedelta(days=CUTOFF_DAYS)
+
+          index_file = Path("web/data/index.json")
+          if not index_file.exists():
+              print("[i] No index.json found — nothing to refresh.")
+              sys.exit(0)
+
+          with open(index_file) as f:
+              index = json.load(f)
+
+          domains = index.get("domains", [])
+          refreshed = 0
+          skipped = 0
+
+          for entry in domains:
+              domain = entry["domain"]
+              last_str = entry.get("last_refreshed") or entry.get("queried_at", "")
+
+              # Parse last_refreshed, skip domains outside 90-day window
+              try:
+                  last_dt = datetime.fromisoformat(last_str.replace("Z", "+00:00"))
+                  if last_dt < cutoff:
+                      print(f"[skip] {domain} — last refreshed {last_str} (>{CUTOFF_DAYS}d ago)")
+                      skipped += 1
+                      continue
+              except Exception:
+                  pass  # unparseable date: refresh it anyway
+
+              domain_file = Path(f"web/data/domains/{domain}.json")
+
+              # Read existing metadata to preserve display_name, display_loc, queried_at
+              existing = {}
+              if domain_file.exists():
+                  try:
+                      with open(domain_file) as f:
+                          existing = json.load(f)
+                  except Exception:
+                      pass
+
+              print(f"[>] Refreshing {domain}")
+              result = subprocess.run(
+                  [sys.executable, "crtsh-recon.py", "-d", domain, "-o", str(domain_file), "--no-cache"],
+                  capture_output=True, text=True
+              )
+
+              if result.returncode != 0:
+                  print(f"[!] Failed: {domain}\n{result.stderr}")
+                  continue
+
+              # Restore display metadata + update last_refreshed
+              if domain_file.exists():
+                  with open(domain_file) as f:
+                      data = json.load(f)
+
+                  data["display_name"]   = existing.get("display_name", "")
+                  data["display_loc"]    = existing.get("display_loc", "")
+                  data["queried_at"]     = existing.get("queried_at", data.get("queried_at", ""))
+                  now_str = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+                  data["last_refreshed"] = now_str
+
+                  with open(domain_file, "w") as f:
+                      json.dump(data, f, indent=2)
+
+                  # Update entry in index
+                  summary = data.get("summary", {})
+                  entry["cert_count"]        = data.get("cert_count", 0)
+                  entry["direct_subdomains"] = summary.get("direct_subdomains", 0)
+                  entry["wildcards"]         = summary.get("wildcards", 0)
+                  entry["san_leaks"]         = summary.get("san_leaks", 0)
+                  entry["last_refreshed"]    = now_str
+
+                  refreshed += 1
+
+          # Write updated index
+          now_str = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+          index["generated_at"]  = now_str
+          index["total_domains"] = len(domains)
+          index["total_certs"]   = sum(d.get("cert_count", 0) for d in domains)
+
+          with open(index_file, "w") as f:
+              json.dump(index, f, indent=2)
+
+          print(f"\n[+] Done: {refreshed} refreshed, {skipped} skipped (>{CUTOFF_DAYS}d inactive)")
+
+      - name: Commit refreshed data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add web/data/
+          git diff --staged --quiet || git commit -m "[data] monthly refresh [skip ci]" && git push
