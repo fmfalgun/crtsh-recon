@@ -1,0 +1,10 @@
+# No external dependencies.
+# crtsh-recon uses Python standard library only:
+#   urllib.request  — HTTPS requests to crt.sh API
+#   sqlite3         — local recon database
+#   json            — API response parsing
+#   argparse        — CLI argument handling
+#   datetime        — timestamp generation
+#
+# Requires: Python >= 3.6
+# Install:  nothing to install — just run the script directly.

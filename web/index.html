@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>crtsh-recon — CT Log Subdomain Discovery</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header id="header">
+    <div id="header-left">
+      <span id="tool-name">crtsh-recon</span>
+      <span id="tool-subtitle">Certificate Transparency Recon</span>
+    </div>
+    <div id="header-right">
+      <span id="demo-note">demo: nmap.org &mdash; refreshed daily</span>
+    </div>
+  </header>
+
+  <!-- Error banner (hidden by default) -->
+  <div id="error-box" class="hidden">
+    <span id="error-message"></span>
+  </div>
+
+  <!-- Stats row -->
+  <section id="stats-row" class="stats-row">
+    <div class="stat-badge" id="stat-total-certs">
+      <span class="stat-value" id="val-total-certs">&mdash;</span>
+      <span class="stat-label">Total Certs</span>
+    </div>
+    <div class="stat-badge" id="stat-direct">
+      <span class="stat-value" id="val-direct">&mdash;</span>
+      <span class="stat-label">Direct Subdomains</span>
+    </div>
+    <div class="stat-badge" id="stat-wildcards">
+      <span class="stat-value" id="val-wildcards">&mdash;</span>
+      <span class="stat-label">Wildcards</span>
+    </div>
+    <div class="stat-badge" id="stat-leaks">
+      <span class="stat-value" id="val-leaks">&mdash;</span>
+      <span class="stat-label">SAN Leaks</span>
+    </div>
+  </section>
+
+  <!-- Results sections -->
+  <main id="results">
+
+    <!-- Direct subdomains -->
+    <section class="result-section section" id="section-direct">
+      <h2 class="section-title direct">// direct subdomains</h2>
+      <div class="entry-list" id="list-direct"></div>
+    </section>
+
+    <!-- Wildcard certs -->
+    <section class="result-section section" id="section-wildcards">
+      <h2 class="section-title wildcard">// wildcard certs</h2>
+      <div class="entry-list" id="list-wildcards"></div>
+    </section>
+
+    <!-- SAN leaks -->
+    <section class="result-section section" id="section-leaks">
+      <h2 class="section-title leak">
+        // san leaks
+        <span class="section-tooltip" title="hostnames from other domains found on shared certs — reveals infrastructure">&#9432;</span>
+      </h2>
+      <div class="section-note leak-note">hostnames from other domains found on shared certs &mdash; reveals infrastructure</div>
+      <div class="entry-list" id="list-leaks"></div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <span>data refreshed daily by GitHub Actions</span>
+    <span class="footer-sep">&middot;</span>
+    <a href="https://github.com/fmfalgun/crtsh-recon" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
