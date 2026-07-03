@@ -2,34 +2,40 @@
   "domain": "nmap.org",
   "display_name": "fmfalgun",
   "display_loc": "Chennai, India",
-  "queried_at": "2026-06-20T02:01:44Z",
-  "last_refreshed": "2026-06-20T02:01:44Z",
-  "cached": false,
-  "cert_count": 52,
-  "entries": [
-    {"name":"nmap.org","type":"direct","issuer":"Let's Encrypt","not_before":"2026-03-14","not_after":"2026-06-12","crtsh_id":14823901},
-    {"name":"www.nmap.org","type":"direct","issuer":"Let's Encrypt","not_before":"2026-03-14","not_after":"2026-06-12","crtsh_id":14823902},
-    {"name":"scanme.nmap.org","type":"direct","issuer":"Let's Encrypt","not_before":"2026-04-01","not_after":"2026-06-30","crtsh_id":15190447},
-    {"name":"svn.nmap.org","type":"direct","issuer":"DigiCert Inc","not_before":"2025-11-10","not_after":"2026-11-10","crtsh_id":13047812},
-    {"name":"lists.nmap.org","type":"direct","issuer":"Let's Encrypt","not_before":"2026-02-19","not_after":"2026-05-20","crtsh_id":14501338},
-    {"name":"secure.nmap.org","type":"direct","issuer":"DigiCert Inc","not_before":"2025-09-03","not_after":"2026-09-03","crtsh_id":12388654},
-    {"name":"mail.nmap.org","type":"direct","issuer":"Let's Encrypt","not_before":"2026-05-02","not_after":"2026-07-31","crtsh_id":15601223},
-    {"name":"cgi.nmap.org","type":"direct","issuer":"Let's Encrypt","not_before":"2025-12-28","not_after":"2026-03-28","crtsh_id":13729045},
-    {"name":"research.nmap.org","type":"direct","issuer":"DigiCert Inc","not_before":"2025-07-15","not_after":"2026-07-15","crtsh_id":11984301},
-    {"name":"dev.nmap.org","type":"direct","issuer":"Let's Encrypt","not_before":"2026-01-07","not_after":"2026-04-07","crtsh_id":14112789},
-    {"name":"*.nmap.org","type":"wildcard","issuer":"DigiCert Inc","not_before":"2025-08-22","not_after":"2026-08-22","crtsh_id":12201567},
-    {"name":"*.nmap.org","type":"wildcard","issuer":"Let's Encrypt","not_before":"2026-04-18","not_after":"2026-07-17","crtsh_id":15388914},
-    {"name":"seclists.org","type":"leak","issuer":"Let's Encrypt","not_before":"2026-03-14","not_after":"2026-06-12","crtsh_id":14823903},
-    {"name":"www.seclists.org","type":"leak","issuer":"Let's Encrypt","not_before":"2026-03-14","not_after":"2026-06-12","crtsh_id":14823904},
-    {"name":"sectools.org","type":"leak","issuer":"DigiCert Inc","not_before":"2025-10-01","not_after":"2026-10-01","crtsh_id":12744198},
-    {"name":"insecure.org","type":"leak","issuer":"Let's Encrypt","not_before":"2026-05-10","not_after":"2026-08-08","crtsh_id":15712043},
-    {"name":"nmap.com","type":"leak","issuer":"DigiCert Inc","not_before":"2025-06-30","not_after":"2026-06-30","crtsh_id":11672890}
+  "queried_at": "2026-06-21T11:37:56Z",
+  "last_refreshed": "2026-06-21T11:37:56Z",
+  "email_count": 4,
+  "host_count": 11,
+  "ip_count": 3,
+  "source_count": 4,
+  "emails": [
+    "fyodor@insecure.org",
+    "nmap-announce@insecure.org",
+    "nmap-dev@insecure.org",
+    "nmap-hackers@insecure.org"
   ],
-  "summary": {
-    "total_certs": 52,
-    "unique_names": 17,
-    "direct_subdomains": 10,
-    "wildcards": 2,
-    "san_leaks": 5
-  }
+  "hosts": [
+    "insecure.org",
+    "mail.nmap.org",
+    "nmap.org",
+    "sectools.org",
+    "secwiki.org",
+    "seclists.org",
+    "shop.nmap.org",
+    "svn.nmap.org",
+    "wiki.nmap.org",
+    "www.nmap.org",
+    "www.seclists.org"
+  ],
+  "ips": [
+    "45.33.32.156",
+    "45.33.49.119",
+    "45.79.182.96"
+  ],
+  "sources": [
+    "certspotter",
+    "crtsh",
+    "dnsdumpster",
+    "hackertarget"
+  ]
 }
