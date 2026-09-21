@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-20T07:24:20Z",
+  "generated_at": "2026-09-21T07:34:52Z",
   "total_domains": 1,
   "total_certs": 86,
   "domains": [
@@ -7,8 +7,8 @@
       "domain": "nmap.org",
       "display_name": "fmfalgun",
       "display_loc": "Chennai, India",
-      "queried_at": "2026-09-20T07:24:20Z",
-      "last_refreshed": "2026-09-20T07:24:20Z",
+      "queried_at": "2026-09-21T07:34:52Z",
+      "last_refreshed": "2026-09-21T07:34:52Z",
       "cert_count": 86,
       "direct_subdomains": 329,
       "wildcards": 0,
